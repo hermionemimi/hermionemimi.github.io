@@ -7,387 +7,32 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Long+Cang&family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    /* soft off-white blush — the cover (a touch whiter) */
-    --cover-top:#fbf4f2;
-    --cover-mid:#f4e6e2;
-    --cover-low:#edd9d5;
-    /* blue-black fountain-pen ink == the midnight sky in the letter */
-    --ink:#232b40;
-    --ink-soft:#46506a;
-    --ink-faint:#737d96;
-    /* aged letter paper (inside) */
-    --paper:#efe7d6;
-    --paper-edge:#e3d8c0;
-    --paper-shadow:rgba(60,46,28,.18);
-    /* ivory envelope */
-    --kraft:#f2e9db;
-    --kraft-dark:#e8ddc9;
-    --kraft-deep:#dcceb4;
-    /* dusty-rose accents — courtyard flowers */
-    --rose:#c77f7a;
-    --rose-soft:#e3aaa4;
-    --rose-gold:#e7c486;
-    --bougain:#c44d86;
-    --bougain-deep:#a83a70;
-    --leaf:#9aa882;
-    --hint:#a8746e;
-    --stamp-line:rgba(120,80,76,.42);
-    --stamp-text:rgba(110,74,70,.74);
-  }
-
-  *{box-sizing:border-box;margin:0;padding:0}
-
-  html,body{min-height:100%}
-  body{
-    font-family:"EB Garamond","Noto Serif SC",serif;
-    background:
-      radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 55%),
-      linear-gradient(180deg, var(--cover-top) 0%, var(--cover-mid) 50%, var(--cover-low) 100%);
-    background-attachment:fixed;
-    color:var(--ink);
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:32px 18px 64px;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  /* soft blush glow */
-  body::before{
-    content:"";
-    position:fixed; inset:0;
-    background-image:
-      radial-gradient(42% 32% at 12% 84%, rgba(227,170,164,.30), transparent 70%),
-      radial-gradient(38% 30% at 88% 14%, rgba(199,127,122,.20), transparent 70%);
-    pointer-events:none;
-    z-index:0;
-  }
-
-  /* ===== language postmarks ===== */
-  .langs{
-    position:relative; z-index:5;
-    display:flex; gap:14px;
-    margin-bottom:30px;
-  }
-  .stamp{
-    width:46px; height:46px; border-radius:50%;
-    background:transparent;
-    border:1.5px solid var(--stamp-line);
-    color:var(--stamp-text);
-    font-family:"Cormorant Garamond","Noto Serif SC",serif;
-    font-size:15px; letter-spacing:.04em;
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition:all .35s ease;
-    transform:rotate(-7deg);
-  }
-  .stamp:nth-child(2){transform:rotate(5deg)}
-  .stamp:nth-child(3){transform:rotate(-3deg)}
-  .stamp:hover{border-color:var(--rose); color:var(--rose)}
-  .stamp.active{
-    border-color:var(--rose);
-    color:#fff;
-    background:var(--rose);
-    box-shadow:0 0 0 3px rgba(199,127,122,.18);
-  }
-  .stamp:focus-visible{outline:2px solid var(--rose); outline-offset:3px}
-
-  /* ===== stage ===== */
-  .stage{
-    position:relative; z-index:2;
-    width:100%;
-    display:flex; flex-direction:column; align-items:center;
-    flex:1;
-  }
-
-  /* ===== envelope ===== */
-  .envelope-wrap{
-    display:flex; flex-direction:column; align-items:center;
-    margin-top:6vh;
-    transition:opacity .6s ease, transform .6s ease;
-  }
-  .envelope{
-    position:relative;
-    width:380px; height:248px;
-    cursor:pointer;
-    filter:drop-shadow(0 22px 38px rgba(120,80,76,.30));
-  }
-  .envelope:focus-visible{outline:2px solid #fff; outline-offset:6px; border-radius:4px}
-
-  .env-back{
-    position:absolute; inset:0;
-    background:linear-gradient(160deg,var(--kraft) 0%, var(--kraft-dark) 100%);
-    border-radius:8px;
-  }
-  /* the peeking letter inside the envelope */
-  .env-letter-peek{
-    position:absolute;
-    left:14px; right:14px; top:16px;
-    height:200px;
-    background:linear-gradient(180deg,var(--paper) 0%, var(--paper-edge) 100%);
-    border-radius:6px 6px 0 0;
-    z-index:1;
-    transition:transform .9s cubic-bezier(.22,.61,.36,1);
-    box-shadow:0 -2px 8px rgba(0,0,0,.06);
-  }
-  /* front pocket: two side triangles + bottom */
-  .env-front{
-    position:absolute; inset:0; z-index:2;
-    overflow:hidden; border-radius:8px;
-  }
-  .env-front::before{ /* bottom + sides via clip */
-    content:"";
-    position:absolute; inset:0;
-    background:linear-gradient(155deg,var(--kraft) 0%, var(--kraft-deep) 100%);
-    clip-path:polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);
-  }
-  .env-front::after{ /* subtle center crease */
-    content:"";
-    position:absolute; left:0; right:0; top:0; height:100%;
-    background:linear-gradient(155deg, rgba(0,0,0,.05), transparent 40%);
-  }
-  /* the flap */
-  .env-flap{
-    position:absolute; top:0; left:0; right:0; height:130px;
-    z-index:4;
-    transform-origin:top center;
-    transition:transform .7s cubic-bezier(.6,.04,.36,1), z-index 0s .35s;
-    backface-visibility:hidden;
-  }
-  .env-flap::before{
-    content:"";
-    position:absolute; inset:0;
-    background:linear-gradient(155deg,var(--kraft-dark) 0%, var(--kraft-deep) 100%);
-    clip-path:polygon(0 0, 100% 0, 50% 100%);
-    filter:brightness(.97);
-  }
-  /* floral seal — a little pressed bouquet where the flap closes */
-  .seal{
-    position:absolute; left:50%; top:64px; z-index:5;
-    width:92px; height:92px; margin-left:-46px;
-    display:flex; align-items:center; justify-content:center;
-    transition:opacity .4s ease, transform .5s ease;
-    pointer-events:none;
-  }
-  .seal svg{ width:100%; height:100%;
-    filter:drop-shadow(0 3px 4px rgba(120,80,76,.32)) drop-shadow(0 -1px 0 rgba(255,255,255,.55)); }
-
-  .hint{
-    margin-top:30px; z-index:3;
-    font-family:"Cormorant Garamond","Noto Serif SC",serif;
-    font-style:italic;
-    color:var(--hint);
-    font-size:18px; letter-spacing:.02em;
-    text-align:center; line-height:1.7;
-    animation:breathe 3.4s ease-in-out infinite;
-  }
-  .hint span{ display:block }
-  .hint .zh{ font-size:15.5px; font-style:normal; opacity:.85; letter-spacing:.08em }
-
-  /* ===== password gate ===== */
-  .lock{
-    display:none; flex-direction:column; align-items:center; gap:18px;
-    margin-top:34px; z-index:3;
-  }
-  .lock.show{ display:flex; animation:fadeUp .55s ease both }
-  @keyframes fadeUp{ from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
-
-  .gate-cap{
-    text-align:center; line-height:1.5;
-    font-family:"Cormorant Garamond","Noto Serif SC",serif;
-    font-style:italic; color:var(--hint);
-    font-size:18px; letter-spacing:.02em;
-  }
-  .gate-cap span{ display:block }
-  .gate-cap .zh{ font-style:normal; font-size:13px; opacity:.78; letter-spacing:.24em; margin-top:4px }
-
-  .pin{ position:relative; }
-  .pin-cells{ display:flex; gap:9px; }
-  .pin-cell{
-    width:34px; height:46px; border-radius:8px;
-    background:linear-gradient(180deg,#f7f0e2 0%, #ece0ca 100%);
-    border:1px solid rgba(120,80,76,.22);
-    box-shadow:0 1px 0 rgba(255,255,255,.65) inset, 0 2px 5px rgba(120,80,76,.10);
-    display:flex; align-items:center; justify-content:center;
-    transition:border-color .25s ease, box-shadow .25s ease, transform .25s ease;
-  }
-  .pin-cell::after{
-    content:""; width:8px; height:8px; border-radius:50%;
-    background:var(--ink); transform:scale(0); opacity:0;
-    transition:transform .2s ease, opacity .2s ease;
-  }
-  .pin-cell.filled::after{ transform:scale(1); opacity:.85 }
-  .pin-cell.active{
-    border-color:var(--rose);
-    box-shadow:0 0 0 3px rgba(199,127,122,.16), 0 2px 6px rgba(120,80,76,.12);
-    transform:translateY(-1px);
-  }
-  .pin-input{
-    position:absolute; inset:0; width:100%; height:100%;
-    opacity:0; cursor:pointer; font-size:16px;   /* 16px avoids iOS zoom */
-    border:none; background:transparent;
-  }
-  .pin.shake{ animation:shake .42s cubic-bezier(.36,.07,.19,.97) both }
-  @keyframes shake{
-    10%,90%{transform:translateX(-2px)} 20%,80%{transform:translateX(4px)}
-    30%,50%,70%{transform:translateX(-7px)} 40%,60%{transform:translateX(7px)}
-  }
-  @keyframes breathe{0%,100%{opacity:.55}50%{opacity:.95}}
-
-  /* ===== opened state on envelope ===== */
-  .opened .env-flap{ transform:rotateX(180deg); z-index:0; }
-  .opened .seal{ opacity:0; transform:scale(.6) translateY(-6px); }
-  .opened .env-letter-peek{ transform:translateY(-60px); opacity:0; }
-  .opened .envelope-wrap{ opacity:0; transform:translateY(-30px) scale(.96); pointer-events:none; }
-
-  /* ===== the letter ===== */
-  .letter{
-    position:relative; z-index:3;
-    width:100%; max-width:660px;
-    margin-top:8px;
-    background:
-      radial-gradient(58% 34% at 80% 7%, rgba(150,118,68,.07), transparent 70%),
-      radial-gradient(52% 30% at 11% 93%, rgba(150,118,68,.08), transparent 70%),
-      radial-gradient(40% 24% at 92% 90%, rgba(120,90,50,.06), transparent 70%),
-      linear-gradient(180deg, rgba(255,255,255,.25), transparent 6%, transparent 94%, rgba(60,46,28,.05)),
-      linear-gradient(180deg, var(--paper) 0%, var(--paper) 100%);
-    border-radius:10px;
-    padding:64px 56px 52px;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,.4) inset,
-      0 0 60px rgba(120,90,50,.09) inset,
-      0 26px 60px rgba(120,80,76,.30),
-      0 2px 6px rgba(120,80,76,.18);
-    background-clip:padding-box;
-    opacity:0; transform:translateY(40px);
-    transition:opacity .8s ease .15s, transform .9s cubic-bezier(.22,.61,.36,1) .15s;
-    display:none;
-  }
-  .letter.show{ display:block; }
-  .letter.reveal{ opacity:1; transform:translateY(0); }
-
-  /* paper grain + faint fold creases + speckle */
-  .letter::before{
-    content:""; position:absolute; inset:0; pointer-events:none; border-radius:10px;
-    background-image:
-      linear-gradient(180deg, transparent 32.8%, rgba(120,96,60,.07) 33%, transparent 33.3%),
-      linear-gradient(180deg, transparent 66.4%, rgba(120,96,60,.06) 66.6%, transparent 66.9%),
-      radial-gradient(1px 1px at 22% 28%, rgba(120,90,50,.10), transparent),
-      radial-gradient(1px 1px at 73% 47%, rgba(120,90,50,.09), transparent),
-      radial-gradient(1px 1px at 38% 71%, rgba(120,90,50,.08), transparent),
-      radial-gradient(1px 1px at 85% 79%, rgba(120,90,50,.08), transparent);
-    mix-blend-mode:multiply;
-  }
-
-  .letter-head{
-    text-align:center;
-    margin-bottom:38px;
-  }
-  .letter-title{
-    font-family:"Cormorant Garamond","Noto Serif SC",serif;
-    font-weight:500;
-    font-size:31px;
-    letter-spacing:.01em;
-    color:var(--ink);
-    margin-bottom:6px;
-  }
-  .letter-sub{
-    font-family:"Caveat","Ma Shan Zheng",cursive;
-    font-size:24px;
-    color:var(--ink-soft);
-  }
-  .rule{
-    width:54px; height:1px; margin:20px auto 0;
-    background:linear-gradient(90deg,transparent,var(--ink-soft),transparent);
-  }
-
-  .body p{
-    font-size:18.5px;
-    line-height:1.95;
-    color:var(--ink);
-    margin-bottom:19px;
-    text-align:justify;
-  }
-  /* the recurring time-refrain — a marginal recurring note */
-  .body p.refrain{
-    font-style:italic;
-    text-align:left;
-    color:var(--ink-soft);
-    padding-left:26px;
-    border-left:1px solid rgba(70,80,106,.28);
-    margin:26px 0 26px;
-    font-size:18px;
-  }
-  .body p.ps{
-    margin-top:30px;
-    font-style:italic;
-    color:var(--ink-soft);
-    font-size:17px;
-  }
-  .sig{
-    margin-top:34px; text-align:right;
-  }
-  .sig .name{
-    font-family:"Caveat","Long Cang","Noto Serif SC",cursive;
-    font-weight:400;
-    font-size:32px; line-height:1.2;
-    color:var(--ink);
-    letter-spacing:.04em;
-  }
-  .sig .date{
-    font-family:"EB Garamond","Noto Serif SC",serif;
-    font-style:italic;
-    font-size:16px; color:var(--ink-soft);
-    margin-top:6px;
-    letter-spacing:.08em;
-  }
-
-  /* lang-specific font on the letter */
-  .letter[data-lang="zh"] .body p{ font-family:"Noto Serif SC",serif; font-weight:400; line-height:2.1; letter-spacing:.02em; }
-  .letter[data-lang="zh"] .letter-title{ font-family:"Noto Serif SC",serif; font-weight:500; letter-spacing:.08em; }
-  .letter[data-lang="zh"] .body p.refrain{ font-style:normal; }
-
-  .reseal{
-    display:block; margin:40px auto 0; z-index:3; position:relative;
-    background:transparent; border:none; cursor:pointer;
-    font-family:"Cormorant Garamond","Noto Serif SC",serif;
-    font-style:italic; font-size:16px;
-    color:var(--hint);
-    letter-spacing:.04em;
-    transition:color .3s ease;
-  }
-  .reseal:hover{ color:var(--rose) }
-  .reseal:focus-visible{ outline:2px solid var(--rose); outline-offset:4px; border-radius:3px }
-  .reseal.show{ display:block }
-  .reseal{ display:none }
-
-  @media (max-width:560px){
-    .envelope{ width:300px; height:196px }
-    .env-flap{ height:104px }
-    .seal{ top:46px; width:72px; height:72px; margin-left:-36px }
-    .letter{ padding:46px 26px 40px }
-    .letter-title{ font-size:26px }
-    .body p{ font-size:17px }
-    .body p.refrain{ padding-left:18px }
-  }
-
-  @media (prefers-reduced-motion:reduce){
-    *{ transition:none !important; animation:none !important }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-
+  <div class="time-overlay" id="timeOverlay"></div>
 
   <nav class="langs" id="langs" aria-label="langue / 语言 / language">
     <button class="stamp" data-lang="fr" aria-label="Français">FR</button>
     <button class="stamp active" data-lang="zh" aria-label="中文">中</button>
     <button class="stamp" data-lang="en" aria-label="English">EN</button>
+    <button class="player-btn" id="playerBtn" aria-label="Musique / 音乐">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="icon-play" points="7,4 20,12 7,20"/>
+      </svg>
+    </button>
   </nav>
+
+  <div class="player-info" id="playerInfo">
+    <button class="skip-btn" id="prevBtn" aria-label="Précédente / 上一首">
+      <svg viewBox="0 0 16 16"><path d="M3,2v12h2V9l7,5V2L5,7V2z"/></svg>
+    </button>
+    <span class="track-name" id="trackName"></span>
+    <button class="skip-btn" id="nextBtn" aria-label="Suivante / 下一首">
+      <svg viewBox="0 0 16 16"><path d="M13,14V2h-2v5L4,2v12l7-5v5z"/></svg>
+    </button>
+  </div>
 
   <main class="stage">
     <div class="envelope-wrap" id="envWrap">
@@ -405,19 +50,16 @@
                 <circle cx="-5.7" cy="-1.85" r="5"/>
               </g>
             </defs>
-            <!-- branches -->
             <g fill="none" stroke="var(--leaf)" stroke-width="1.4" stroke-linecap="round" opacity=".85">
               <path d="M50,78 C46,66 40,58 33,50"/>
               <path d="M50,78 C50,64 50,55 50,46"/>
               <path d="M50,78 C54,66 60,58 67,50"/>
             </g>
-            <!-- leaves -->
             <g fill="var(--leaf)">
               <ellipse cx="37" cy="59" rx="9" ry="4" transform="rotate(-42 37 59)"/>
               <ellipse cx="63" cy="59" rx="9" ry="4" transform="rotate(42 63 59)"/>
               <ellipse cx="50" cy="67" rx="4.5" ry="9"/>
             </g>
-            <!-- ordinary blossoms only -->
             <use href="#rose5" transform="translate(35,45) scale(0.88)" fill="var(--rose)"/>
             <circle cx="35" cy="45" r="3.3" fill="var(--rose-gold)"/>
             <use href="#rose5" transform="translate(65,45) scale(0.88)" fill="var(--rose)"/>
@@ -428,12 +70,12 @@
         </div>
       </div>
       <p class="hint" id="hint">
-        <span>Touchez l’enveloppe pour ouvrir la lettre</span>
+        <span>Touchez l'enveloppe pour ouvrir la lettre</span>
         <span class="zh">轻触信封，展开这封信</span>
       </p>
       <div class="lock" id="lock">
         <div class="gate-cap">
-          <span>Un mot de passe, pour l’ouvrir</span>
+          <span>Un mot de passe, pour l'ouvrir</span>
           <span class="zh">输入密码，方可展信</span>
         </div>
         <div class="pin" id="pin">
@@ -451,247 +93,9 @@
     <button class="reseal" id="reseal">重新封缄</button>
   </main>
 
-<script>
-const T = {
-  zh:{
-    title:"关于奕涵的回忆",
-    sub:"我在昆明遇见杨奕涵",
-    hint:"轻触信封，展开这封信",
-    reseal:"重新封缄",
-    seal:"奕",
-    body:[
-      {t:"p",x:"我在昆明遇见杨奕涵。"},
-      {t:"p",x:"好像她在青旅 check-in 的时候我就看到她了，我好像坐在小院里，或者窗边的沙发上，第一眼我就看到了她。"},
-      {t:"p",x:"当然她很美，后来我知道她是中法混血儿，我可能当时有猜测，但这个念头只是一闪而过，我想还有几天，或许某一个时候我可以和她聊聊天。"},
-      {t:"refrain",x:"直到她要离开这里的前一晚"},
-      {t:"p",x:"我至少瞥见过她两次，我想她那时候也看见我了，但我们带着陌生人的匆忙和躲闪，又各自出发去自己的目的地。"},
-      {t:"refrain",x:"直到她要离开这里的前一晚"},
-      {t:"p",x:"我坐在四楼的平板沙发上，吹着晚风，10 点半的时候蚊子还不太多，刚逃开了楼下的欢乐喧闹，我很放松。那时候，我心里或许有百分之一的期待能见到她，但如果直到最后也没有再见我也不会惊讶，旅途中这是常有的事。"},
-      {t:"refrain",x:"直到吱呀一声她打开房门"},
-      {t:"p",x:"我完全不记得当时在想什么，好像是我早已想好的画面，一场现场重播。我对她打招呼，说的什么我努力回想也不能确定，或许是你在昆明多久了，或许是我之前见过你，但结果是，她坐在我右边，我们说了很多话，聊到 12 点 20，夜空中的云完全散了，沉入深沉的蓝黑色。"},
-      {t:"p",x:"肯定是我说的更多，因为我们用中文，她说的认真又可爱。"},
-      {t:"p",x:"我难以形容这种感觉，这是很珍贵的感受，大概她开口的第 10 秒我就知道了，我的心灵喜欢她。我没有问过她那时候感觉怎样，我可能永远也无从知晓，我猜至少不会太差，毕竟 12 点后蚊子真的很多。"},
-      {t:"p",x:"她比我小很多，这我没有猜到。用她的语气说，这个没办法。"},
-      {t:"p",x:"第二天早上，我带她去了我最喜欢的农贸市场，吃了一份她不太喜欢的辣米线，但是木瓜水不错。之后我们骑车去圆通寺。"},
-      {t:"p",x:"她做很多有趣的小表情，说：“那这个没办法啊。”我们开很多玩笑，当然，白天的时候，总没有凉风习习的晚上让人放松，我有点不好意思，有点不够聪明，那这个没办法啊。但总之我们度过了一个愉快的上午。"},
-      {t:"p",x:"吃完饭后，我有种想让所有事发展符合我的想象的愿望。我叫她离开有人抽烟的地方，叫她出去散步，叫她去三楼天台，我不该这样做的，不过我没法苛责自己，因为我真的喜欢她，而这是我认识她的第二天，而她马上要离开这里了。"},
-      {t:"p",x:"我应该在散步那个小花园拥抱她的，但我满脑子是下一刻怎么做一个“完美浪漫”的告别。而不是此时此刻我和她在一起。"},
-      {t:"p",x:"当然我最后还是拥抱了她，略有生硬的说了一句我喜欢你，我想，其实还好，没那么差劲。"},
-      {t:"p",x:"我下楼的时候，她已经去乘火车了。我开始整理照片，一张张都过于可爱，她的眉毛，眼睛，小表情和微笑。"},
-      {t:"p",x:"我选了好多张，我留下了一张偷偷拍的给自己，睡前我把照片发给她。这之前我们三言两语聊了几句，有一个语音我撤了又发，反复听自己说的怎么样，之后我自己笑了好一会，我好像又成了 19、20 岁的样子。"},
-      {t:"p",x:"我喜欢听她的声音，不熟练但很好的中文，我想我会总能记得她的样子。"},
-      {t:"p",x:"写到这里，我几乎在写一封情书了，所以我逐渐打算给她看，但我并不期待什么。"},
-      {t:"p",x:"如果你读到了这里，亲爱的奕涵，虽然我并不知道你的过去，小时候你玩什么游戏，看什么电视，后来有过什么理想，认为生命中什么重要，喜欢过什么样的男孩。但在你的一次旅途中，某个人心灵的一小部分因为你，停留在昆明那个满是花儿小院的四楼上了，这一部分我无比了解。"},
-      {t:"ps",x:"btw，你是我见过最美的法国女孩（real）"}
-    ],
-    name:"杜",
-    date:"2026 · 06 · 19"
-  },
-
-  fr:{
-    title:"Souvenirs de Yihan",
-    sub:"J’ai rencontré Yang Yihan à Kunming",
-    hint:"Touchez l’enveloppe pour ouvrir la lettre",
-    reseal:"Refermer",
-    seal:"奕",
-    body:[
-      {t:"p",x:"J’ai rencontré Yang Yihan à Kunming."},
-      {t:"p",x:"Je crois que je l’ai vue dès son arrivée à l’auberge, au moment où elle s’enregistrait. J’étais sans doute assis dans la petite cour, ou sur le canapé près de la fenêtre — et dès le premier regard, je l’ai remarquée."},
-      {t:"p",x:"Elle était belle, évidemment. J’ai appris plus tard qu’elle était métisse sino-française. J’avais peut-être eu un soupçon sur le moment, mais l’idée n’avait fait que traverser mon esprit. Je me disais qu’il restait encore quelques jours, et qu’à un moment ou un autre, j’aurais peut-être l’occasion de lui parler."},
-      {t:"refrain",x:"Jusqu’à la veille de son départ."},
-      {t:"p",x:"Je l’avais aperçue au moins deux fois ; je crois qu’elle aussi m’avait vu. Mais avec la hâte et la gêne de deux inconnus, nous avons détourné le regard, avant de repartir chacun vers notre destination."},
-      {t:"refrain",x:"Jusqu’à la veille de son départ."},
-      {t:"p",x:"J’étais assis sur le canapé bas du quatrième étage, dans la brise du soir. À dix heures et demie, les moustiques n’étaient pas encore trop nombreux ; je venais d’échapper à l’agitation joyeuse du rez-de-chaussée, et je me sentais détendu. À ce moment-là, il y avait peut-être en moi un pour cent d’espoir de la revoir — mais si cela ne devait jamais arriver, je n’en aurais pas été surpris : en voyage, c’est chose courante."},
-      {t:"refrain",x:"Jusqu’à ce que, dans un grincement, sa porte s’ouvre."},
-      {t:"p",x:"Je ne me souviens absolument pas de ce à quoi je pensais — c’était comme une scène que j’avais déjà imaginée, une rediffusion en direct. Je l’ai saluée ; j’ai beau chercher, je ne retrouve pas mes mots — peut-être lui ai-je demandé depuis combien de temps elle était à Kunming, ou que je l’avais déjà aperçue. Quoi qu’il en soit, elle s’est assise à ma droite, et nous avons parlé longtemps, jusqu’à minuit vingt ; les nuages s’étaient entièrement dissipés, et le ciel avait sombré dans un bleu-noir profond."},
-      {t:"p",x:"C’est sûrement moi qui ai le plus parlé, puisque nous parlions chinois. Ce qu’elle disait était sérieux et adorable à la fois."},
-      {t:"p",x:"Je n’arrive pas à décrire cette sensation, un sentiment précieux — je crois que je l’ai su dès la dixième seconde où elle a ouvert la bouche : mon âme l’aimait. Je ne lui ai jamais demandé ce qu’elle ressentait alors, et je ne le saurai sans doute jamais ; mais je parie que ce n’était pas si mal — après tout, passé minuit, les moustiques étaient vraiment nombreux."},
-      {t:"p",x:"Elle était bien plus jeune que moi, ce que je n’avais pas deviné. Comme elle dirait elle-même : on n’y peut rien."},
-      {t:"p",x:"Le lendemain matin, je l’ai emmenée au marché que je préfère. Elle a goûté des nouilles de riz épicées qu’elle n’a pas vraiment aimées, mais l’eau de papaye lui a plu. Ensuite, nous sommes allés à vélo jusqu’au temple Yuantong."},
-      {t:"p",x:"Elle faisait plein de petites mimiques amusantes et répétait : « Bon, on n’y peut rien. » On a beaucoup plaisanté. Bien sûr, le jour n’a jamais la douceur apaisante des soirs de brise ; j’étais un peu gêné, pas très malin — on n’y peut rien, là non plus. Mais dans l’ensemble, nous avons passé une belle matinée."},
-      {t:"p",x:"Après le repas, j’ai été pris du désir de faire tout se dérouler exactement comme je l’avais imaginé. Je lui ai demandé de quitter l’endroit où quelqu’un fumait, d’aller marcher, de monter sur la terrasse du troisième étage. Je n’aurais pas dû, mais je ne peux pas vraiment m’en vouloir : je l’aimais vraiment, ce n’était que le deuxième jour, et elle allait bientôt partir."},
-      {t:"p",x:"J’aurais dû la prendre dans mes bras dans ce petit jardin, pendant la promenade. Mais j’avais la tête pleine de l’instant suivant — comment réussir un adieu « parfait et romantique » — au lieu d’être simplement là, avec elle, dans le présent."},
-      {t:"p",x:"Bien sûr, je l’ai tout de même prise dans mes bras, et je lui ai dit, un peu maladroitement, que je l’aimais bien. Au fond, je crois que ce n’était pas si mal."},
-      {t:"p",x:"Quand je suis redescendu, elle était déjà partie prendre son train. Je me suis mis à trier les photos — chacune trop adorable : ses sourcils, ses yeux, ses petites mimiques, son sourire."},
-      {t:"p",x:"J’en ai choisi beaucoup ; j’en ai gardé une, prise à la dérobée, rien que pour moi. Avant de dormir, je lui ai envoyé les autres. Avant cela, nous avions échangé quelques mots ; il y a un message vocal que j’ai supprimé puis renvoyé, encore et encore, à réécouter ma propre voix — après quoi j’ai ri tout seul un long moment. J’avais l’impression d’avoir de nouveau dix-neuf ou vingt ans."},
-      {t:"p",x:"J’aime écouter sa voix, son chinois maladroit mais si doux. Je crois que je me souviendrai toujours de son visage."},
-      {t:"p",x:"En écrivant ces lignes, je suis presque en train d’écrire une lettre d’amour ; alors, peu à peu, j’ai décidé de la lui faire lire — sans rien attendre en retour."},
-      {t:"p",x:"Si tu lis ces mots, chère Yihan : je ne connais rien de ton passé — à quoi tu jouais enfant, ce que tu regardais à la télévision, les rêves que tu as eus, ce que tu juges essentiel dans la vie, ni le genre de garçons que tu as aimés. Mais au cours d’un de tes voyages, à cause de toi, une petite partie de l’âme de quelqu’un est restée là-haut, au quatrième étage de cette cour fleurie de Kunming — et cette partie-là, je la connais mieux que personne."},
-      {t:"ps",x:"PS : tu es la plus belle fille française que j’aie jamais vue (sans rire)."}
-    ],
-    name:"Du",
-    date:"19 · 06 · 2026"
-  },
-
-  en:{
-    title:"Remembering Yihan",
-    sub:"I met Yang Yihan in Kunming",
-    hint:"Tap the envelope to open the letter",
-    reseal:"Seal it back",
-    seal:"奕",
-    body:[
-      {t:"p",x:"I met Yang Yihan in Kunming."},
-      {t:"p",x:"I think I saw her the moment she arrived at the hostel, while she was checking in. I was probably sitting in the little courtyard, or on the couch by the window — and at first glance, I noticed her."},
-      {t:"p",x:"She was beautiful, of course. I learned later that she was half Chinese, half French. I may have suspected as much at the time, but the thought only flickered through my mind. I told myself there were still a few days left, and that sooner or later I might find a moment to talk to her."},
-      {t:"refrain",x:"Until the night before she was to leave."},
-      {t:"p",x:"I had caught sight of her at least twice; I think she had seen me too. But with the haste and shyness of strangers, we looked away, and set off again, each toward our own destination."},
-      {t:"refrain",x:"Until the night before she was to leave."},
-      {t:"p",x:"I was sitting on the low couch on the fourth floor, in the evening breeze. At half past ten the mosquitoes weren’t too bad yet; I’d just escaped the cheerful din downstairs, and I felt at ease. There was maybe a one-percent hope in me of seeing her again — but if it never happened, I wouldn’t have been surprised: on the road, that’s how it usually goes."},
-      {t:"refrain",x:"Until, with a creak, her door opened."},
-      {t:"p",x:"I have no memory at all of what I was thinking — it was like a scene I had already pictured, a live rerun. I said hello; however hard I try, I can’t recall my words — maybe I asked how long she’d been in Kunming, or said I’d noticed her before. Either way, she sat down to my right, and we talked for a long time, until twenty past midnight; the clouds had cleared completely, and the sky had sunk into a deep blue-black."},
-      {t:"p",x:"It was surely me who talked more, since we spoke in Chinese. What she said was earnest and lovely."},
-      {t:"p",x:"I can’t describe this feeling, this precious feeling — I think I knew within ten seconds of her first words: my heart liked her. I never asked how she felt in that moment, and I’ll probably never know; but I’d wager it wasn’t too bad — after all, past midnight the mosquitoes were really out."},
-      {t:"p",x:"She was much younger than me, which I hadn’t guessed. As she herself would say: nothing to be done about it."},
-      {t:"p",x:"The next morning, I took her to my favorite market. She tried some spicy rice noodles she didn’t much like, but the papaya water was good. Then we rode our bikes to Yuantong Temple."},
-      {t:"p",x:"She made all sorts of funny little faces and kept saying, “Well, nothing to be done about it.” We joked a lot. Of course, the daytime never has the cool, easy calm of the evening; I was a little shy, a little less than clever — nothing to be done about that either. But all in all, we had a lovely morning."},
-      {t:"p",x:"After lunch, I was seized by a wish to make everything unfold exactly as I’d imagined. I asked her to leave the spot where someone was smoking, to go for a walk, to go up to the third-floor terrace. I shouldn’t have done that, but I can’t really blame myself: I truly liked her, it was only the second day I’d known her, and she was about to leave."},
-      {t:"p",x:"I should have held her in that little garden, during our walk. But my head was full of the next moment — how to pull off a “perfect, romantic” goodbye — instead of simply being there, with her, in the present."},
-      {t:"p",x:"In the end I did hold her, and said, a little stiffly, that I liked her. Looking back, I think it was alright — not so bad after all."},
-      {t:"p",x:"By the time I went downstairs, she had already left for her train. I started sorting the photos — every one of them too lovely: her eyebrows, her eyes, her little expressions, her smile."},
-      {t:"p",x:"I picked out many; I kept one I’d taken on the sly, just for myself. Before sleep, I sent her the rest. Before that we’d exchanged a few words; there was one voice message I deleted and resent, again and again, listening back to how I sounded — and then I laughed to myself for a good while. I felt like I was nineteen or twenty again."},
-      {t:"p",x:"I love listening to her voice, her clumsy but lovely Chinese. I think I’ll always remember her face."},
-      {t:"p",x:"Writing this, I’m almost writing a love letter; so, little by little, I’ve decided to let her read it — without expecting anything in return."},
-      {t:"p",x:"If you’ve read this far, dear Yihan: though I know nothing of your past — what games you played as a child, what you watched on television, what dreams you later had, what you consider important in life, or the kind of boys you once liked — still, on one of your journeys, because of you, a small part of someone’s heart stayed up there, on the fourth floor of that flower-filled courtyard in Kunming. And that part, I know better than anyone."},
-      {t:"ps",x:"btw, you’re the most beautiful French girl I’ve ever seen (for real)."}
-    ],
-    name:"Du",
-    date:"19 June 2026"
-  }
-};
-
-const letterEl = document.getElementById('letter');
-const envelope = document.getElementById('envelope');
-const envWrap  = document.getElementById('envWrap');
-const hint     = document.getElementById('hint');
-const reseal   = document.getElementById('reseal');
-const langs    = document.getElementById('langs');
-const seal     = envelope.querySelector('.seal');
-
-let lang = 'zh';
-let opened = false;
-
-function renderLetter(){
-  const d = T[lang];
-  document.title = d.title;
-  document.documentElement.lang = (lang==='zh'?'zh':lang);
-  reseal.textContent = d.reseal;
-
-  let html = `<div class="letter-head">
-      <div class="letter-title">${d.title}</div>
-      <div class="rule"></div>
-    </div><div class="body">`;
-  d.body.forEach(b=>{
-    const cls = b.t==='refrain' ? ' class="refrain"' : (b.t==='ps' ? ' class="ps"' : '');
-    html += `<p${cls}>${b.x}</p>`;
-  });
-  html += `</div>
-    <div class="sig">
-      <div class="name">${d.name}</div>
-      <div class="date">${d.date}</div>
-    </div>`;
-  letterEl.innerHTML = html;
-  letterEl.setAttribute('data-lang', lang);
-}
-
-function openEnvelope(){
-  if(opened) return;
-  opened = true;
-  envelope.classList.add('opened');
-  envWrap.classList.add('opened');
-  // bring in the letter after the flap lifts
-  setTimeout(()=>{
-    envWrap.style.display='none';
-    letterEl.classList.add('show');
-    reseal.classList.add('show');
-    requestAnimationFrame(()=> requestAnimationFrame(()=> letterEl.classList.add('reveal')));
-  }, 620);
-}
-
-function closeEnvelope(){
-  opened = false;
-  letterEl.classList.remove('reveal');
-  setTimeout(()=>{
-    letterEl.classList.remove('show');
-    reseal.classList.remove('show');
-    envWrap.style.display='flex';
-    envelope.classList.remove('opened');
-    envWrap.classList.remove('opened');
-    // reset the gate
-    gateShown = false;
-    lock.classList.remove('show');
-    hint.style.display = '';
-    pw.value = '';
-    if (typeof paintCells === 'function') paintCells();
-    window.scrollTo({top:0, behavior:'smooth'});
-  }, 500);
-}
-
-/* ===== password gate ===== */
-const PASS = "20070110";
-const lock  = document.getElementById('lock');
-const pin   = document.getElementById('pin');
-const pw    = document.getElementById('pw');
-const cells = Array.from(document.getElementById('pinCells').children);
-let gateShown = false;
-
-function paintCells(){
-  const n = pw.value.length;
-  const focused = (document.activeElement === pw);
-  cells.forEach((c,i)=>{
-    c.classList.toggle('filled', i < n);
-    c.classList.toggle('active', focused && i === n && n < cells.length);
-  });
-}
-
-function showGate(){
-  if(gateShown || opened) return;
-  gateShown = true;
-  hint.style.display = 'none';
-  lock.classList.add('show');
-  setTimeout(()=>{ pw.focus(); paintCells(); }, 80);
-}
-
-function reject(){
-  pin.classList.remove('shake');
-  void pin.offsetWidth;            // restart animation
-  pin.classList.add('shake');
-  setTimeout(()=>{ pw.value=''; paintCells(); pw.focus(); }, 430);
-}
-
-function tryOpen(){
-  if(pw.value === PASS){
-    lock.classList.remove('show');
-    openEnvelope();
-  } else {
-    reject();
-  }
-}
-
-envelope.addEventListener('click', showGate);
-envelope.addEventListener('keydown', e=>{
-  if(e.key==='Enter' || e.key===' '){ e.preventDefault(); showGate(); }
-});
-pw.addEventListener('input', ()=>{
-  pw.value = pw.value.replace(/\D/g,'').slice(0, PASS.length);
-  paintCells();
-  if(pw.value.length === PASS.length) tryOpen();
-});
-pw.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); tryOpen(); } });
-pw.addEventListener('focus', paintCells);
-pw.addEventListener('blur', paintCells);
-pin.addEventListener('click', ()=> pw.focus());
-
-reseal.addEventListener('click', closeEnvelope);
-
-langs.addEventListener('click', e=>{
-  const btn = e.target.closest('.stamp');
-  if(!btn) return;
-  lang = btn.dataset.lang;
-  langs.querySelectorAll('.stamp').forEach(s=>s.classList.toggle('active', s===btn));
-  renderLetter();
-});
-
-renderLetter();
-</script>
+<script src="content.js"></script>
+<script src="app.js"></script>
+<script src="atmosphere.js"></script>
+<script src="player.js"></script>
 </body>
 </html>

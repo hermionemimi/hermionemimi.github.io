@@ -1,0 +1,111 @@
+/* annotation helper: {word|pinyin|fr definition} → ruby + tooltip */
+function anno(word, py, def){
+  return `<span class="anno"><ruby>${word}<rt>${py}</rt></ruby><span class="anno-tip">${def}</span></span>`;
+}
+
+const T = {
+  zh:{
+    title:"关于奕涵的回忆",
+    sub:"我在昆明遇见杨奕涵",
+    hint:"轻触信封，展开这封信",
+    reseal:"重新封缄",
+    seal:"奕",
+    body:[
+      {t:"p",x:"我在昆明遇见杨奕涵。"},
+      {t:"p",x:`好像她在${anno('青旅','qīnglǚ','auberge de jeunesse')} check-in 的时候我就看到她了，我好像坐在小院里，或者窗边的沙发上，第一眼我就看到了她。`},
+      {t:"p",x:`当然她很美，后来我知道她是中法${anno('混血儿','hùnxuè\'ér','enfant métis')}，我可能当时有猜测，但这个念头只是${anno('一闪而过','yī shǎn ér guò','traverser l\'esprit en un éclair')}，我想还有几天，或许某一个时候我可以和她聊聊天。`},
+      {t:"refrain",x:"直到她要离开这里的前一晚"},
+      {t:"p",x:`我至少${anno('瞥见','piējiàn','apercevoir furtivement')}过她两次，我想她那时候也看见我了，但我们带着陌生人的${anno('匆忙','cōngmáng','précipitation')}和${anno('躲闪','duǒshǎn','esquiver, se dérober')}，又各自出发去自己的目的地。`},
+      {t:"refrain",x:"直到她要离开这里的前一晚"},
+      {t:"p",x:`我坐在四楼的平板沙发上，吹着晚风，10 点半的时候蚊子还不太多，刚逃开了楼下的欢乐${anno('喧闹','xuānnào','vacarme joyeux')}，我很放松。那时候，我心里或许有百分之一的期待能见到她，但如果直到最后也没有再见我也不会惊讶，旅途中这是常有的事。`},
+      {t:"refrain",x:`直到${anno('吱呀','zhīyā','grincement')}一声她打开房门`},
+      {t:"p",x:`我完全不记得当时在想什么，好像是我早已想好的画面，一场现场重播。我对她打招呼，说的什么我努力回想也不能确定，或许是你在昆明多久了，或许是我之前见过你，但结果是，她坐在我右边，我们说了很多话，聊到 12 点 20，夜空中的云完全散了，沉入${anno('深沉','shēnchén','profond')}的蓝黑色。`},
+      {t:"p",x:"肯定是我说的更多，因为我们用中文，她说的认真又可爱。"},
+      {t:"p",x:`我难以${anno('形容','xíngróng','décrire')}这种感觉，这是很${anno('珍贵','zhēnguì','précieux')}的感受，大概她开口的第 10 秒我就知道了，我的心灵喜欢她。我没有问过她那时候感觉怎样，我可能永远也${anno('无从知晓','wúcóng zhīxiǎo','n\'avoir aucun moyen de savoir')}，我猜至少不会太差，毕竟 12 点后蚊子真的很多。`},
+      {t:"p",x:"她比我小很多，这我没有猜到。用她的语气说，这个没办法。"},
+      {t:"p",x:`第二天早上，我带她去了我最喜欢的${anno('农贸市场','nóngmào shìchǎng','marché de produits frais')}，吃了一份她不太喜欢的辣${anno('米线','mǐxiàn','vermicelles de riz du Yunnan')}，但是${anno('木瓜水','mùguā shuǐ','jus de papaye')}不错。之后我们骑车去${anno('圆通寺','Yuántōng Sì','temple Yuantong')}。`},
+      {t:"p",x:`她做很多有趣的小表情，说：“那这个没办法啊。”我们开很多玩笑，当然，白天的时候，总没有${anno('凉风习习','liángfēng xíxí','douce brise fraîche')}的晚上让人放松，我有点不好意思，有点不够聪明，那这个没办法啊。但总之我们度过了一个愉快的上午。`},
+      {t:"p",x:`吃完饭后，我有种想让所有事发展符合我的想象的愿望。我叫她离开有人抽烟的地方，叫她出去散步，叫她去三楼${anno('天台','tiāntái','terrasse sur le toit')}，我不该这样做的，不过我没法${anno('苛责','kēzé','blâmer sévèrement')}自己，因为我真的喜欢她，而这是我认识她的第二天，而她马上要离开这里了。`},
+      {t:"p",x:"我应该在散步那个小花园拥抱她的，但我满脑子是下一刻怎么做一个“完美浪漫”的告别。而不是此时此刻我和她在一起。"},
+      {t:"p",x:`当然我最后还是拥抱了她，略有${anno('生硬','shēngyìng','maladroit, gauche')}的说了一句我喜欢你，我想，其实还好，没那么差劲。`},
+      {t:"p",x:"我下楼的时候，她已经去乘火车了。我开始整理照片，一张张都过于可爱，她的眉毛，眼睛，小表情和微笑。"},
+      {t:"p",x:`我选了好多张，我留下了一张偷偷拍的给自己，睡前我把照片发给她。这之前我们${anno('三言两语','sān yán liǎng yǔ','quelques mots échangés')}聊了几句，有一个语音我撤了又发，反复听自己说的怎么样，之后我自己笑了好一会，我好像又成了 19、20 岁的样子。`},
+      {t:"p",x:`我喜欢听她的声音，${anno('不熟练','bù shúliàn','pas encore fluide')}但很好的中文，我想我会总能记得她的样子。`},
+      {t:"p",x:`写到这里，我几乎在写一封${anno('情书','qíngshū','lettre d\'amour')}了，所以我逐渐打算给她看，但我并不期待什么。`},
+      {t:"p",x:"如果你读到了这里，亲爱的奕涵，虽然我并不知道你的过去，小时候你玩什么游戏，看什么电视，后来有过什么理想，认为生命中什么重要，喜欢过什么样的男孩。但在你的一次旅途中，某个人心灵的一小部分因为你，停留在昆明那个满是花儿小院的四楼上了，这一部分我无比了解。"},
+      {t:"ps",x:"btw，你是我见过最美的法国女孩（real）"}
+    ],
+    name:"杜",
+    date:"2026 · 06 · 19"
+  },
+
+  fr:{
+    title:"Souvenirs de Yihan",
+    sub:"J'ai rencontré Yang Yihan à Kunming",
+    hint:"Touchez l'enveloppe pour ouvrir la lettre",
+    reseal:"Refermer",
+    seal:"奕",
+    body:[
+      {t:"p",x:"J'ai rencontré Yang Yihan à Kunming."},
+      {t:"p",x:"Je crois que je l'ai vue dès son arrivée à l'auberge, au moment où elle s'enregistrait. J'étais sans doute assis dans la petite cour, ou sur le canapé près de la fenêtre — et dès le premier regard, je l'ai remarquée."},
+      {t:"p",x:"Elle était belle, évidemment. J'ai appris plus tard qu'elle était métisse sino-française. J'avais peut-être eu un soupçon sur le moment, mais l'idée n'avait fait que traverser mon esprit. Je me disais qu'il restait encore quelques jours, et qu'à un moment ou un autre, j'aurais peut-être l'occasion de lui parler."},
+      {t:"refrain",x:"Jusqu'à la veille de son départ."},
+      {t:"p",x:"Je l'avais aperçue au moins deux fois ; je crois qu'elle aussi m'avait vu. Mais avec la hâte et la gêne de deux inconnus, nous avons détourné le regard, avant de repartir chacun vers notre destination."},
+      {t:"refrain",x:"Jusqu'à la veille de son départ."},
+      {t:"p",x:"J'étais assis sur le canapé bas du quatrième étage, dans la brise du soir. À dix heures et demie, les moustiques n'étaient pas encore trop nombreux ; je venais d'échapper à l'agitation joyeuse du rez-de-chaussée, et je me sentais détendu. À ce moment-là, il y avait peut-être en moi un pour cent d'espoir de la revoir — mais si cela ne devait jamais arriver, je n'en aurais pas été surpris : en voyage, c'est chose courante."},
+      {t:"refrain",x:"Jusqu'à ce que, dans un grincement, sa porte s'ouvre."},
+      {t:"p",x:"Je ne me souviens absolument pas de ce à quoi je pensais — c'était comme une scène que j'avais déjà imaginée, une rediffusion en direct. Je l'ai saluée ; j'ai beau chercher, je ne retrouve pas mes mots — peut-être lui ai-je demandé depuis combien de temps elle était à Kunming, ou que je l'avais déjà aperçue. Quoi qu'il en soit, elle s'est assise à ma droite, et nous avons parlé longtemps, jusqu'à minuit vingt ; les nuages s'étaient entièrement dissipés, et le ciel avait sombré dans un bleu-noir profond."},
+      {t:"p",x:"C'est sûrement moi qui ai le plus parlé, puisque nous parlions chinois. Ce qu'elle disait était sérieux et adorable à la fois."},
+      {t:"p",x:"Je n'arrive pas à décrire cette sensation, un sentiment précieux — je crois que je l'ai su dès la dixième seconde où elle a ouvert la bouche : mon âme l'aimait. Je ne lui ai jamais demandé ce qu'elle ressentait alors, et je ne le saurai sans doute jamais ; mais je parie que ce n'était pas si mal — après tout, passé minuit, les moustiques étaient vraiment nombreux."},
+      {t:"p",x:"Elle était bien plus jeune que moi, ce que je n'avais pas deviné. Comme elle dirait elle-même : on n'y peut rien."},
+      {t:"p",x:"Le lendemain matin, je l'ai emmenée au marché que je préfère. Elle a goûté des nouilles de riz épicées qu'elle n'a pas vraiment aimées, mais l'eau de papaye lui a plu. Ensuite, nous sommes allés à vélo jusqu'au temple Yuantong."},
+      {t:"p",x:"Elle faisait plein de petites mimiques amusantes et répétait : « Bon, on n'y peut rien. » On a beaucoup plaisanté. Bien sûr, le jour n'a jamais la douceur apaisante des soirs de brise ; j'étais un peu gêné, pas très malin — on n'y peut rien, là non plus. Mais dans l'ensemble, nous avons passé une belle matinée."},
+      {t:"p",x:"Après le repas, j'ai été pris du désir de faire tout se dérouler exactement comme je l'avais imaginé. Je lui ai demandé de quitter l'endroit où quelqu'un fumait, d'aller marcher, de monter sur la terrasse du troisième étage. Je n'aurais pas dû, mais je ne peux pas vraiment m'en vouloir : je l'aimais vraiment, ce n'était que le deuxième jour, et elle allait bientôt partir."},
+      {t:"p",x:"J'aurais dû la prendre dans mes bras dans ce petit jardin, pendant la promenade. Mais j'avais la tête pleine de l'instant suivant — comment réussir un adieu « parfait et romantique » — au lieu d'être simplement là, avec elle, dans le présent."},
+      {t:"p",x:"Bien sûr, je l'ai tout de même prise dans mes bras, et je lui ai dit, un peu maladroitement, que je l'aimais bien. Au fond, je crois que ce n'était pas si mal."},
+      {t:"p",x:"Quand je suis redescendu, elle était déjà partie prendre son train. Je me suis mis à trier les photos — chacune trop adorable : ses sourcils, ses yeux, ses petites mimiques, son sourire."},
+      {t:"p",x:"J'en ai choisi beaucoup ; j'en ai gardé une, prise à la dérobée, rien que pour moi. Avant de dormir, je lui ai envoyé les autres. Avant cela, nous avions échangé quelques mots ; il y a un message vocal que j'ai supprimé puis renvoyé, encore et encore, à réécouter ma propre voix — après quoi j'ai ri tout seul un long moment. J'avais l'impression d'avoir de nouveau dix-neuf ou vingt ans."},
+      {t:"p",x:"J'aime écouter sa voix, son chinois maladroit mais si doux. Je crois que je me souviendrai toujours de son visage."},
+      {t:"p",x:"En écrivant ces lignes, je suis presque en train d'écrire une lettre d'amour ; alors, peu à peu, j'ai décidé de la lui faire lire — sans rien attendre en retour."},
+      {t:"p",x:"Si tu lis ces mots, chère Yihan : je ne connais rien de ton passé — à quoi tu jouais enfant, ce que tu regardais à la télévision, les rêves que tu as eus, ce que tu juges essentiel dans la vie, ni le genre de garçons que tu as aimés. Mais au cours d'un de tes voyages, à cause de toi, une petite partie de l'âme de quelqu'un est restée là-haut, au quatrième étage de cette cour fleurie de Kunming — et cette partie-là, je la connais mieux que personne."},
+      {t:"ps",x:"PS : tu es la plus belle fille française que j'aie jamais vue (sans rire)."}
+    ],
+    name:"Du",
+    date:"19 · 06 · 2026"
+  },
+
+  en:{
+    title:"Remembering Yihan",
+    sub:"I met Yang Yihan in Kunming",
+    hint:"Tap the envelope to open the letter",
+    reseal:"Seal it back",
+    seal:"奕",
+    body:[
+      {t:"p",x:"I met Yang Yihan in Kunming."},
+      {t:"p",x:"I think I saw her the moment she arrived at the hostel, while she was checking in. I was probably sitting in the little courtyard, or on the couch by the window — and at first glance, I noticed her."},
+      {t:"p",x:"She was beautiful, of course. I learned later that she was half Chinese, half French. I may have suspected as much at the time, but the thought only flickered through my mind. I told myself there were still a few days left, and that sooner or later I might find a moment to talk to her."},
+      {t:"refrain",x:"Until the night before she was to leave."},
+      {t:"p",x:"I had caught sight of her at least twice; I think she had seen me too. But with the haste and shyness of strangers, we looked away, and set off again, each toward our own destination."},
+      {t:"refrain",x:"Until the night before she was to leave."},
+      {t:"p",x:"I was sitting on the low couch on the fourth floor, in the evening breeze. At half past ten the mosquitoes weren't too bad yet; I'd just escaped the cheerful din downstairs, and I felt at ease. There was maybe a one-percent hope in me of seeing her again — but if it never happened, I wouldn't have been surprised: on the road, that's how it usually goes."},
+      {t:"refrain",x:"Until, with a creak, her door opened."},
+      {t:"p",x:"I have no memory at all of what I was thinking — it was like a scene I had already pictured, a live rerun. I said hello; however hard I try, I can't recall my words — maybe I asked how long she'd been in Kunming, or said I'd noticed her before. Either way, she sat down to my right, and we talked for a long time, until twenty past midnight; the clouds had cleared completely, and the sky had sunk into a deep blue-black."},
+      {t:"p",x:"It was surely me who talked more, since we spoke in Chinese. What she said was earnest and lovely."},
+      {t:"p",x:"I can't describe this feeling, this precious feeling — I think I knew within ten seconds of her first words: my heart liked her. I never asked how she felt in that moment, and I'll probably never know; but I'd wager it wasn't too bad — after all, past midnight the mosquitoes were really out."},
+      {t:"p",x:"She was much younger than me, which I hadn't guessed. As she herself would say: nothing to be done about it."},
+      {t:"p",x:"The next morning, I took her to my favorite market. She tried some spicy rice noodles she didn't much like, but the papaya water was good. Then we rode our bikes to Yuantong Temple."},
+      {t:"p",x:"She made all sorts of funny little faces and kept saying, “Well, nothing to be done about it.” We joked a lot. Of course, the daytime never has the cool, easy calm of the evening; I was a little shy, a little less than clever — nothing to be done about that either. But all in all, we had a lovely morning."},
+      {t:"p",x:"After lunch, I was seized by a wish to make everything unfold exactly as I'd imagined. I asked her to leave the spot where someone was smoking, to go for a walk, to go up to the third-floor terrace. I shouldn't have done that, but I can't really blame myself: I truly liked her, it was only the second day I'd known her, and she was about to leave."},
+      {t:"p",x:"I should have held her in that little garden, during our walk. But my head was full of the next moment — how to pull off a “perfect, romantic” goodbye — instead of simply being there, with her, in the present."},
+      {t:"p",x:"In the end I did hold her, and said, a little stiffly, that I liked her. Looking back, I think it was alright — not so bad after all."},
+      {t:"p",x:"By the time I went downstairs, she had already left for her train. I started sorting the photos — every one of them too lovely: her eyebrows, her eyes, her little expressions, her smile."},
+      {t:"p",x:"I picked out many; I kept one I'd taken on the sly, just for myself. Before sleep, I sent her the rest. Before that we'd exchanged a few words; there was one voice message I deleted and resent, again and again, listening back to how I sounded — and then I laughed to myself for a good while. I felt like I was nineteen or twenty again."},
+      {t:"p",x:"I love listening to her voice, her clumsy but lovely Chinese. I think I'll always remember her face."},
+      {t:"p",x:"Writing this, I'm almost writing a love letter; so, little by little, I've decided to let her read it — without expecting anything in return."},
+      {t:"p",x:"If you've read this far, dear Yihan: though I know nothing of your past — what games you played as a child, what you watched on television, what dreams you later had, what you consider important in life, or the kind of boys you once liked — still, on one of your journeys, because of you, a small part of someone's heart stayed up there, on the fourth floor of that flower-filled courtyard in Kunming. And that part, I know better than anyone."},
+      {t:"ps",x:"btw, you're the most beautiful French girl I've ever seen (for real)."}
+    ],
+    name:"Du",
+    date:"19 June 2026"
+  }
+};
